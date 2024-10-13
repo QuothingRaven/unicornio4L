@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Gunch's 90s Website!</title>
+    
+    <!-- Inline Styles for the retro feel -->
+    <style>
+        body {
+            background-color: #00FFFF; /* Bright cyan background */
+            color: #0000FF; /* Blue text */
+            font-family: "Comic Sans MS", cursive, sans-serif;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #FF00FF; /* Magenta Heading */
+            text-shadow: 2px 2px 4px #000000;
+        }
+
+        h2 {
+            color: #FF4500; /* Bright orange subheadings */
+        }
+
+        a {
+            color: #FF1493; /* Hot pink links */
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .blink {
+            animation: blink-animation 1s steps(5, start) infinite;
+            -webkit-animation: blink-animation 1s steps(5, start) infinite;
+        }
+
+        @keyframes blink-animation {
+            to {
+                visibility: hidden;
+            }
+        }
+
+        marquee {
+            font-size: 20px;
+            color: #32CD32; /* Lime green scrolling text */
+        }
+
+        .content {
+            text-align: center;
+        }
+
+        .button {
+            background-color: #FFA500; /* Orange buttons */
+            border: 2px solid #000000;
+            color: #000000;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 10px 2px;
+            cursor: pointer;
+            box-shadow: 3px 3px 5px #888888;
+        }
+
+        .retro-table {
+            width: 80%;
+            margin: auto;
+            border: 3px solid #0000FF; /* Blue border for table */
+            border-collapse: collapse;
+        }
+
+        .retro-table th, .retro-table td {
+            border: 1px solid #0000FF;
+            padding: 10px;
+            text-align: center;
+            background-color: #FFD700; /* Gold table cells */
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Title -->
+    <h1>Welcome to Gunch's Awesome 90s Website!</h1>
+
+    <!-- Scrolling marquee -->
+    <marquee>Welcome! This website is under construction!</marquee>
+
+    <!-- Hit counter (fake for now) -->
+    <p style="text-align: center;"><img src="https://www.reliablecounter.com/count.php?page=yourpagehere.com&digit=style/plain/5/&reloads=0" alt="hit counter"></p>
+
+    <!-- Content -->
+    <div class="content">
+        <h2><span class="blink">Check out my cool stuff!</span></h2>
+        
+        <p>This is the best place on the web for amazing 90s vibes.</p>
+
+        <!-- Animated GIF -->
+        <img src="https://i.gifer.com/YOUR_ANIMATED_GIF.gif" alt="Cool Animated GIF" width="300px" height="300px"><br><br>
+
+        <!-- Buttons -->
+        <a href="#" class="button">Awesome Link 1</a>
+        <a href="#" class="button">Awesome Link 2</a>
+
+        <!-- Retro Table -->
+        <table class="retro-table">
+            <tr>
+                <th>Item</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>Gif 1</td>
+                <td>Dancing Baby</td>
+            </tr>
+            <tr>
+                <td>Gif 2</td>
+                <td>Flaming Text</td>
+            </tr>
+        </table>
+
+        <p>Sign my guestbook below!</p>
+        <form action="guestbook.html" method="post">
+            Name: <input type="text" name="name"><br><br>
+            Message: <textarea name="message" rows="4" cols="50"></textarea><br><br>
+            <input type="submit" value="Sign Guestbook">
+        </form>
+    </div>
+
+    <!-- More animated gifs -->
+    <img src="https://i.gifer.com/YOUR_ANIMATED_GIF2.gif" alt="Retro GIF">
+
+</body>
+
+</html>
