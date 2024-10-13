@@ -1,37 +1,37 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WELCOME TO UNICORNIO WEBSITE!</title>
-    
+
     <!-- Solana Web3.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/solana-web3.js/1.73.0/solana-web3.min.js"></script>
     <!-- Wallet Adapter -->
     <script src="https://unpkg.com/@solana/wallet-adapter-base"></script>
     <script src="https://unpkg.com/@solana/wallet-adapter-wallets"></script>
-    
+
     <!-- Inline Styles for the retro feel -->
     <style>
         body {
-            background-color: #800080; /* Bright cyan background */
-            color: #160016; /* Blue text */
+            background-color: #800080;
+            color: #160016;
             font-family: "Comic Sans MS", cursive, sans-serif;
         }
-        
+
         h1 {
             text-align: center;
-            color: #160016; /* Magenta Heading */
+            color: #160016;
             text-shadow: 2px 2px 4px #000000;
         }
 
         h2 {
-            color: #FF4500; /* Bright orange subheadings */
+            color: #FF4500;
         }
 
         a {
-            color: #FF1493; /* Hot pink links */
+            color: #FF1493;
             text-decoration: none;
         }
 
@@ -52,7 +52,7 @@
 
         marquee {
             font-size: 20px;
-            color: #32CD32; /* Lime green scrolling text */
+            color: #32CD32;
         }
 
         .content {
@@ -60,12 +60,11 @@
         }
 
         .button {
-            background-color: #FFA500; /* Orange buttons */
+            background-color: #FFA500;
             border: 2px solid #000000;
             color: #000000;
             padding: 10px 20px;
             text-align: center;
-            text-decoration: none;
             display: inline-block;
             font-size: 16px;
             font-weight: bold;
@@ -77,15 +76,16 @@
         .retro-table {
             width: 80%;
             margin: auto;
-            border: 3px solid #0000FF; /* Blue border for table */
+            border: 3px solid #0000FF;
             border-collapse: collapse;
         }
 
-        .retro-table th, .retro-table td {
+        .retro-table th,
+        .retro-table td {
             border: 1px solid #0000FF;
             padding: 10px;
             text-align: center;
-            background-color: #FFD700; /* Gold table cells */
+            background-color: #FFD700;
         }
 
         #wallet-container {
@@ -169,11 +169,8 @@
     <!-- Content -->
     <div class="content">
         <h2><span class="blink">Check out my cool stuff!</span></h2>
-        
-        <p>EVERY 11 YEAR CREDIT CYCLE A FEW UNICORNS ARE MADE WHICH PRODUCE ALL YIELD FOR THAT CYCLE. FIND THIS DECADE'S UNICORN.</p>
 
-        <!-- Animated GIF -->
-        <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExOG9rOXp5eXZ6emg4em5lZGRqYWMyemlnMDJiZTU5dWZobjFnaDNtaSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/vR1dPIYzQmkRzLZk2w/giphy.webp" alt="UNDER CONSTRUCTION" width="300px" height="300px"><br><br>
+        <p>EVERY 11 YEAR CREDIT CYCLE A FEW UNICORNS ARE MADE WHICH PRODUCE ALL YIELD FOR THAT CYCLE. FIND THIS DECADE'S UNICORN.</p>
 
         <!-- Buttons -->
         <a href="https://www.unicorn.meme/" class="button">UwU</a>
@@ -229,7 +226,7 @@
             debugLog.scrollTop = debugLog.scrollHeight;
         }
 
-        window.onload = function() {
+        window.onload = function () {
             log('Page loaded successfully.');
         };
 
@@ -239,13 +236,13 @@
                     loading.style.display = 'block';
                     errorMessage.textContent = '';
                     log('Attempting to connect wallet...');
-                    
+
                     // Check if Phantom wallet is installed
                     const provider = window?.solana;
                     if (!provider) {
                         throw new Error("Phantom wallet not found. Please install it and try again.");
                     }
-                    
+
                     await provider.connect();
                     wallet = provider;
                     connectButton.textContent = 'Disconnect Wallet';
@@ -274,7 +271,7 @@
                 loading.style.display = 'block';
                 errorMessage.textContent = '';
                 log('Fetching NFTs...');
-                
+
                 const connection = new solanaWeb3.Connection('https://api.mainnet-beta.solana.com', 'confirmed');
                 log('Connected to Solana network.');
 
@@ -284,36 +281,6 @@
                 );
                 log(`Fetched ${nftsResponse.value.length} token accounts.`);
 
-                const nfts = nftsResponse.value.filter(accountInfo => 
+                const nfts = nftsResponse.value.filter(accountInfo =>
                     accountInfo.account.data.parsed.info.mint === COLLECTION_ADDRESS &&
-                    accountInfo.account.data.parsed.info.tokenAmount.uiAmount > 0
-                );
-                log(`Found ${nfts.length} NFTs matching the collection address.`);
-
-                nftContainer.innerHTML = '';
-                if (nfts.length === 0) {
-                    errorMessage.textContent = 'No NFTs found for this collection in your wallet.';
-                    log('No NFTs found for the specified collection.');
-                } else {
-                    nfts.forEach(nft => {
-                        const nftCard = document.createElement('div');
-                        nftCard.className = 'nft-card';
-                        nftCard.innerHTML = `
-                            <img src="placeholder.jpg" alt="NFT" class="nft-image">
-                            <p>Token: ${nft.account.data.parsed.info.mint}</p>
-                        `;
-                        nftContainer.appendChild(nftCard);
-                    });
-                    log('NFTs displayed successfully.');
-                }
-            } catch (err) {
-                console.error('Failed to fetch NFTs:', err);
-                errorMessage.textContent = `Failed to fetch NFTs: ${err.message}`;
-                log(`Error fetching NFTs: ${err.message}`);
-            } finally {
-                loading.style.display = 'none';
-            }
-        }
-    </script>
-</body>
-</html>
+                    accountInfo
