@@ -5,13 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WELCOME TO UNICORNIO WEBSITE!</title>
-
+    
     <!-- Solana Web3.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/solana-web3.js/1.73.0/solana-web3.min.js"></script>
     <!-- Wallet Adapter -->
     <script src="https://unpkg.com/@solana/wallet-adapter-base"></script>
     <script src="https://unpkg.com/@solana/wallet-adapter-wallets"></script>
-
+    
     <!-- Inline Styles for the retro feel -->
     <style>
         body {
@@ -19,7 +19,7 @@
             color: #160016;
             font-family: "Comic Sans MS", cursive, sans-serif;
         }
-
+        
         h1 {
             text-align: center;
             color: #160016;
@@ -64,8 +64,6 @@
             border: 2px solid #000000;
             color: #000000;
             padding: 10px 20px;
-            text-align: center;
-            display: inline-block;
             font-size: 16px;
             font-weight: bold;
             margin: 10px 2px;
@@ -80,8 +78,7 @@
             border-collapse: collapse;
         }
 
-        .retro-table th,
-        .retro-table td {
+        .retro-table th, .retro-table td {
             border: 1px solid #0000FF;
             padding: 10px;
             text-align: center;
@@ -169,8 +166,10 @@
     <!-- Content -->
     <div class="content">
         <h2><span class="blink">Check out my cool stuff!</span></h2>
-
         <p>EVERY 11 YEAR CREDIT CYCLE A FEW UNICORNS ARE MADE WHICH PRODUCE ALL YIELD FOR THAT CYCLE. FIND THIS DECADE'S UNICORN.</p>
+
+        <!-- Animated GIF -->
+        <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExOG9rOXp5eXZ6emg4em5lZGRqYWMyemlnMDJiZTU5dWZobjFnaDNtaSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/vR1dPIYzQmkRzLZk2w/giphy.webp" alt="UNDER CONSTRUCTION" width="300px" height="300px"><br><br>
 
         <!-- Buttons -->
         <a href="https://www.unicorn.meme/" class="button">UwU</a>
@@ -207,6 +206,7 @@
     <!-- Debug Log -->
     <div id="debug-log"></div>
 
+    <!-- Improved Wallet Connection Script -->
     <script>
         const connectButton = document.getElementById('connect-wallet');
         const walletStatus = document.getElementById('wallet-status');
@@ -214,9 +214,6 @@
         const errorMessage = document.getElementById('error-message');
         const loading = document.getElementById('loading');
         const debugLog = document.getElementById('debug-log');
-
-        // Replace with your actual collection address
-        const COLLECTION_ADDRESS = 'YOUR_COLLECTION_ADDRESS_HERE';
 
         let wallet = null;
 
@@ -228,23 +225,24 @@
 
         window.onload = function () {
             log('Page loaded successfully.');
+            if (window.solana && window.solana.isPhantom) {
+                log('Phantom wallet found!');
+                connectButton.addEventListener('click', connectWallet);
+            } else {
+                log('Phantom wallet not found. Please install Phantom and refresh the page.');
+                errorMessage.textContent = 'Phantom wallet not found. Please install it.';
+            }
         };
 
-        connectButton.addEventListener('click', async () => {
+        async function connectWallet() {
             if (!wallet) {
                 try {
                     loading.style.display = 'block';
                     errorMessage.textContent = '';
                     log('Attempting to connect wallet...');
 
-                    // Check if Phantom wallet is installed
-                    const provider = window?.solana;
-                    if (!provider) {
-                        throw new Error("Phantom wallet not found. Please install it and try again.");
-                    }
-
-                    await provider.connect();
-                    wallet = provider;
+                    await window.solana.connect();
+                    wallet = window.solana;
                     connectButton.textContent = 'Disconnect Wallet';
                     walletStatus.textContent = `Connected: ${wallet.publicKey.toString()}`;
                     log('Wallet connected successfully.');
@@ -264,7 +262,7 @@
                 errorMessage.textContent = '';
                 log('Wallet disconnected.');
             }
-        });
+        }
 
         async function fetchNFTs() {
             try {
@@ -273,14 +271,4 @@
                 log('Fetching NFTs...');
 
                 const connection = new solanaWeb3.Connection('https://api.mainnet-beta.solana.com', 'confirmed');
-                log('Connected to Solana network.');
-
-                const nftsResponse = await connection.getParsedTokenAccountsByOwner(
-                    wallet.publicKey,
-                    { programId: new solanaWeb3.PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA') }
-                );
-                log(`Fetched ${nftsResponse.value.length} token accounts.`);
-
-                const nfts = nftsResponse.value.filter(accountInfo =>
-                    accountInfo.account.data.parsed.info.mint === COLLECTION_ADDRESS &&
-                    accountInfo
+                log
