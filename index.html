@@ -1,22 +1,28 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Gunch's 90s Website!</title>
+    <title>WELCOME TO UNICORNIO WEBSITE!</title>
+    
+    <!-- Solana Web3.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/solana-web3.js/1.73.0/solana-web3.min.js"></script>
+    <!-- Wallet Adapter -->
+    <script src="https://unpkg.com/@solana/wallet-adapter-base"></script>
+    <script src="https://unpkg.com/@solana/wallet-adapter-wallets"></script>
     
     <!-- Inline Styles for the retro feel -->
     <style>
         body {
-            background-color: #00FFFF; /* Bright cyan background */
-            color: #0000FF; /* Blue text */
+            background-color: #800080; /* Bright cyan background */
+            color: #160016; /* Blue text */
             font-family: "Comic Sans MS", cursive, sans-serif;
         }
         
         h1 {
             text-align: center;
-            color: #FF00FF; /* Magenta Heading */
+            color: #160016; /* Magenta Heading */
             text-shadow: 2px 2px 4px #000000;
         }
 
@@ -81,13 +87,67 @@
             text-align: center;
             background-color: #FFD700; /* Gold table cells */
         }
+
+        #wallet-container {
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #FFD700;
+            border: 2px solid #0000FF;
+            text-align: center;
+        }
+
+        #nft-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .nft-card {
+            width: 200px;
+            margin: 10px;
+            padding: 10px;
+            background-color: #FFD700;
+            border: 2px solid #0000FF;
+            text-align: center;
+        }
+
+        .nft-image {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        #error-message {
+            color: #FF0000;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        #loading {
+            display: none;
+            color: #0000FF;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        #debug-log {
+            background-color: #000000;
+            color: #00FF00;
+            padding: 10px;
+            margin-top: 20px;
+            font-family: monospace;
+            text-align: left;
+            height: 200px;
+            overflow-y: auto;
+        }
     </style>
 </head>
 
 <body>
 
     <!-- Title -->
-    <h1>Welcome to Gunch's Awesome 90s Website!</h1>
+    <h1>WELCOME TO UNICORNIO WEBSITE!</h1>
 
     <!-- Scrolling marquee -->
     <marquee>Welcome! This website is under construction!</marquee>
@@ -95,18 +155,29 @@
     <!-- Hit counter (fake for now) -->
     <p style="text-align: center;"><img src="https://www.reliablecounter.com/count.php?page=yourpagehere.com&digit=style/plain/5/&reloads=0" alt="hit counter"></p>
 
+    <!-- Wallet Connection -->
+    <div id="wallet-container">
+        <button id="connect-wallet" class="button">Connect Wallet</button>
+        <p id="wallet-status"></p>
+        <p id="loading">Loading...</p>
+        <p id="error-message"></p>
+    </div>
+
+    <!-- NFT Display -->
+    <div id="nft-container"></div>
+
     <!-- Content -->
     <div class="content">
         <h2><span class="blink">Check out my cool stuff!</span></h2>
         
-        <p>This is the best place on the web for amazing 90s vibes.</p>
+        <p>EVERY 11 YEAR CREDIT CYCLE A FEW UNICORNS ARE MADE WHICH PRODUCE ALL YIELD FOR THAT CYCLE. FIND THIS DECADE'S UNICORN.</p>
 
         <!-- Animated GIF -->
-        <img src="https://i.gifer.com/YOUR_ANIMATED_GIF.gif" alt="Cool Animated GIF" width="300px" height="300px"><br><br>
+        <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExOG9rOXp5eXZ6emg4em5lZGRqYWMyemlnMDJiZTU5dWZobjFnaDNtaSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/vR1dPIYzQmkRzLZk2w/giphy.webp" alt="UNDER CONSTRUCTION" width="300px" height="300px"><br><br>
 
         <!-- Buttons -->
-        <a href="#" class="button">Awesome Link 1</a>
-        <a href="#" class="button">Awesome Link 2</a>
+        <a href="https://www.unicorn.meme/" class="button">UwU</a>
+        <a href="https://unicornio.meme/" class="button">Unicornio Memeio</a>
 
         <!-- Retro Table -->
         <table class="retro-table">
@@ -133,8 +204,116 @@
     </div>
 
     <!-- More animated gifs -->
-    <img src="https://i.gifer.com/YOUR_ANIMATED_GIF2.gif" alt="Retro GIF">
+    <img src="https://www.unicorn.meme/img/sidebar/28.webp" alt="Retro GIF">
+    <img src="https://media.tenor.com/CiV0bZA9R2MAAAAi/spinning-turning.gif">
 
+    <!-- Debug Log -->
+    <div id="debug-log"></div>
+
+    <script>
+        const connectButton = document.getElementById('connect-wallet');
+        const walletStatus = document.getElementById('wallet-status');
+        const nftContainer = document.getElementById('nft-container');
+        const errorMessage = document.getElementById('error-message');
+        const loading = document.getElementById('loading');
+        const debugLog = document.getElementById('debug-log');
+
+        // Replace with your actual collection address
+        const COLLECTION_ADDRESS = 'YOUR_COLLECTION_ADDRESS_HERE';
+
+        let wallet = null;
+
+        function log(message) {
+            console.log(message);
+            debugLog.innerHTML += message + '<br>';
+            debugLog.scrollTop = debugLog.scrollHeight;
+        }
+
+        window.onload = function() {
+            log('Page loaded successfully.');
+        };
+
+        connectButton.addEventListener('click', async () => {
+            if (!wallet) {
+                try {
+                    loading.style.display = 'block';
+                    errorMessage.textContent = '';
+                    log('Attempting to connect wallet...');
+                    
+                    // Check if Phantom wallet is installed
+                    const provider = window?.solana;
+                    if (!provider) {
+                        throw new Error("Phantom wallet not found. Please install it and try again.");
+                    }
+                    
+                    await provider.connect();
+                    wallet = provider;
+                    connectButton.textContent = 'Disconnect Wallet';
+                    walletStatus.textContent = `Connected: ${wallet.publicKey.toString()}`;
+                    log('Wallet connected successfully.');
+                    fetchNFTs();
+                } catch (err) {
+                    console.error('Failed to connect wallet:', err);
+                    errorMessage.textContent = `Failed to connect wallet: ${err.message}`;
+                    log(`Error connecting wallet: ${err.message}`);
+                } finally {
+                    loading.style.display = 'none';
+                }
+            } else {
+                wallet = null;
+                connectButton.textContent = 'Connect Wallet';
+                walletStatus.textContent = 'Disconnected';
+                nftContainer.innerHTML = '';
+                errorMessage.textContent = '';
+                log('Wallet disconnected.');
+            }
+        });
+
+        async function fetchNFTs() {
+            try {
+                loading.style.display = 'block';
+                errorMessage.textContent = '';
+                log('Fetching NFTs...');
+                
+                const connection = new solanaWeb3.Connection('https://api.mainnet-beta.solana.com', 'confirmed');
+                log('Connected to Solana network.');
+
+                const nftsResponse = await connection.getParsedTokenAccountsByOwner(
+                    wallet.publicKey,
+                    { programId: new solanaWeb3.PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA') }
+                );
+                log(`Fetched ${nftsResponse.value.length} token accounts.`);
+
+                const nfts = nftsResponse.value.filter(accountInfo => 
+                    accountInfo.account.data.parsed.info.mint === COLLECTION_ADDRESS &&
+                    accountInfo.account.data.parsed.info.tokenAmount.uiAmount > 0
+                );
+                log(`Found ${nfts.length} NFTs matching the collection address.`);
+
+                nftContainer.innerHTML = '';
+                if (nfts.length === 0) {
+                    errorMessage.textContent = 'No NFTs found for this collection in your wallet.';
+                    log('No NFTs found for the specified collection.');
+                } else {
+                    nfts.forEach(nft => {
+                        const nftCard = document.createElement('div');
+                        nftCard.className = 'nft-card';
+                        nftCard.innerHTML = `
+                            <img src="placeholder.jpg" alt="NFT" class="nft-image">
+                            <p>Token: ${nft.account.data.parsed.info.mint}</p>
+                        `;
+                        nftContainer.appendChild(nftCard);
+                    });
+                    log('NFTs displayed successfully.');
+                }
+            } catch (err) {
+                console.error('Failed to fetch NFTs:', err);
+                errorMessage.textContent = `Failed to fetch NFTs: ${err.message}`;
+                log(`Error fetching NFTs: ${err.message}`);
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+    </script>
 </body>
-
 </html>
